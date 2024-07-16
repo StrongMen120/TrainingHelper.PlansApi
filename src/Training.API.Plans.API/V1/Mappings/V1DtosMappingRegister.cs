@@ -1,0 +1,171 @@
+using Mapster;
+using Training.API.Plans.Core.Domain;
+
+namespace Training.API.Plans.API.V1.Mappings;
+
+public sealed class V1DtosMappingRegister : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<ExercisesInfoModel, Training.API.Plans.API.V1.DTOs.ExercisesInfoDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.Name, s => s.Name)
+            .Map(d => d.Description, s => s.Description)
+            .Map(d => d.BodyElements, s => s.BodyElements)
+            .Map(d => d.Files, s => s.Files)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<DoneExercisesModel, Training.API.Plans.API.V1.DTOs.DoneExercisesDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.UserId, s => s.UserId)
+            .Map(d => d.Date, s => s.Date)
+            .Map(d => d.ExerciseInfoId, s => s.ExerciseInfoId)
+            .Map(d => d.Series, s => s.Series)
+            .Map(d => d.Reps, s => s.Reps)
+            .Map(d => d.Weight, s => s.Weight)
+            .Map(d => d.Rate, s => s.Rate)
+            .Map(d => d.RPE, s => s.Rpe)
+            .Map(d => d.BrakeSeconds, s => s.BrakeSeconds)
+            .Map(d => d.ExerciseInfo, s => s.Exercise)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<PlannedExercisesModel, Training.API.Plans.API.V1.DTOs.PlannedExercisesDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.PlansId, s => s.PlansId)
+            .Map(d => d.ExerciseInfoId, s => s.ExerciseInfoId)
+            .Map(d => d.Series, s => s.Series)
+            .Map(d => d.Reps, s => s.Reps)
+            .Map(d => d.Weight, s => s.Weight)
+            .Map(d => d.Rate, s => s.Rate)
+            .Map(d => d.RPE, s => s.Rpe)
+            .Map(d => d.BrakeSeconds, s => s.BrakeSeconds)
+            .Map(d => d.ExerciseInfo, s => s.Exercise)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<PlannedTrainingsModel, Training.API.Plans.API.V1.DTOs.PlannedTrainingsDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.PlansId, s => s.PlansId)
+            .Map(d => d.PlansType, s => s.PlansType)
+            .Map(d => d.DateStart, s => s.DateStart)
+            .Map(d => d.DateEnd, s => s.DateEnd)
+            .Map(d => d.UserId, s => s.UserId)
+            .Map(d => d.TrainerId, s => s.TrainerId)
+            .Map(d => d.GroupId, s => s.GroupId)
+            .Map(d => d.Plans, s => s.Plans)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<PlansModel, Training.API.Plans.API.V1.DTOs.PlansDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.Name, s => s.Name)
+            .Map(d => d.Description, s => s.Description)
+            .Map(d => d.AuthorId, s => s.AuthorId)
+            .Map(d => d.Image, s => s.Image)
+            .Map(d => d.PlannedExercise, s => s.PlannedExercise)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<ExercisesInfoDetailsModel, Training.API.Plans.API.V1.DTOs.ExercisesInfoDetailsDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.Name, s => s.Name)
+            .Map(d => d.Description, s => s.Description)
+            .Map(d => d.Files, s => s.Files)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<FileModel, Training.API.Plans.API.V1.DTOs.FileDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.PhotoId, s => s.PhotoId)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<ExercisesRecordsModel, Training.API.Plans.API.V1.DTOs.ExercisesRecordsDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.Revision, s => s.Revision)
+            .Map(d => d.ExerciseId, s => s.ExerciseId)
+            .Map(d => d.UserId, s => s.UserId)
+            .Map(d => d.Date, s => s.Date)
+            .Map(d => d.Reps, s => s.Reps)
+            .Map(d => d.Weight, s => s.Weight)
+            .Map(d => d.LombardiResult, s => s.LombardiResult)
+            .Map(d => d.BrzyckiResult, s => s.BrzyckiResult)
+            .Map(d => d.EpleyResult, s => s.EpleyResult)
+            .Map(d => d.MayhewResult, s => s.MayhewResult)
+            .Map(d => d.AdamsResult, s => s.AdamsResult)
+            .Map(d => d.BaechleResult, s => s.BaechleResult)
+            .Map(d => d.BergerResult, s => s.BergerResult)
+            .Map(d => d.BrownResult, s => s.BrownResult)
+            .Map(d => d.OneRepetitionMaximum, s => s.OneRepetitionMaximum)
+            .Map(d => d.isAutomat, s => s.isAutomat)
+            .Map(d => d.CreatedAt, s => s.CreatedAt)
+            .Map(d => d.CreatedBy, s => s.CreatedBy)
+            .Map(d => d.ModifiedAt, s => s.ModifiedAt)
+            .Map(d => d.ModifiedBy, s => s.ModifiedBy);
+
+        config.NewConfig<StatisticsModel, Training.API.Plans.API.V1.DTOs.StatisticsDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => Guid.NewGuid())
+            .Map(d => d.Date, s => s.Date)
+            .Map(d => d.ExerciseId, s => s.ExerciseId)
+            .Map(d => d.UserId, s => s.UserId)
+            .Map(d => d.WorkoutIntensity, s => s.WorkoutIntensity)
+            .Map(d => d.WorkoutVolume, s => s.WorkoutVolume);
+
+        config.NewConfig<FileDetailsModel, Training.API.Plans.API.V1.DTOs.FileDetailsDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Identifier, s => s.Identifier)
+            .Map(d => d.Name, s => s.Name)
+            .Map(d => d.Size, s => s.Size)
+            .Map(d => d.Bytes, s => s.Bytes)
+            .Map(d => d.Type, s => s.Type)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<UserDetailsModel, Training.API.Plans.API.V1.DTOs.UserDetailsDto>()
+            .MapToConstructor(true)
+            .Map(d => d.FullName, s => s.FullName)
+            .ShallowCopyForSameType(false);
+
+        config.NewConfig<TestEmployersModel, Training.API.Plans.API.V1.DTOs.TestEmployersDto>()
+            .MapToConstructor(true)
+            .Map(d => d.Id, s => s.Id)
+            .Map(d => d.FirstName, s => s.FirstName)
+            .Map(d => d.LastName, s => s.LastName)
+            .Map(d => d.Email, s => s.Email)
+            .Map(d => d.PhoneNumber, s => s.PhoneNumber)
+            .Map(d => d.DateOfBirth, s => s.DateOfBirth)
+            .Map(d => d.Department, s => s.Department)
+            .Map(d => d.JobTitle, s => s.JobTitle)
+            .Map(d => d.Salary, s => s.Salary)
+            .Map(d => d.HireDate, s => s.HireDate)
+            .Map(d => d.Address, s => s.Address)
+            .Map(d => d.Password, s => s.Password);
+    }
+}

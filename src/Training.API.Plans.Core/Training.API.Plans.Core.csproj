@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>Training.API.Plans.Core</RootNamespace>
+    <LangVersion>11.0</LangVersion>
+    
+    
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <CodeAnalysisRuleSet>library-v1.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+    <ItemGroup>    <!-- Package references -->
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="NodaTime" Version="3.1.2" />
+    <PackageReference Include="Bogus" Version="34.0.2" />
+
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    
+
+    <PackageReference Include="Training.Common.Hexagon.Core" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>    <!-- Analyzers references -->
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0-preview1.22403.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

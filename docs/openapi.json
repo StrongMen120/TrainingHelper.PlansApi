@@ -1,0 +1,2383 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Training Plans Api - All Versions",
+    "version": "all"
+  },
+  "paths": {
+    "/api/v1/attachment/exercises-info/{identifier}": {
+      "put": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Updated exercises-info attachment",
+        "operationId": "UpdateExercisesInfoAttachment",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "photoFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "photoFile": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDetailsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/exercises-info/{identifier}/attachment": {
+      "get": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Get exercises-info attachment",
+        "operationId": "GetExercisesInfoAttachment",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDetailsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDetailsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/attachment/{key}/exercises-info/{identifier}": {
+      "delete": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Deleted exercises-info attachment",
+        "operationId": "DeleteExercisesInfoAttachment",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDetailsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDetailsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/done-exercises/{identifier}": {
+      "put": {
+        "tags": [
+          "DoneExercise"
+        ],
+        "summary": "Update done exercises",
+        "operationId": "UpdateDoneExercise",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDoneExerciseCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoneExercisesDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/done-exercises/{userId}": {
+      "get": {
+        "tags": [
+          "DoneExercise"
+        ],
+        "summary": "Gets all done exercises",
+        "operationId": "GetAllDoneExercise",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoneExercisesDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/done-exercises/{doneExerciseId}": {
+      "delete": {
+        "tags": [
+          "DoneExercise"
+        ],
+        "summary": "Delete done exercises",
+        "operationId": "DeleteDoneExercise",
+        "parameters": [
+          {
+            "name": "doneExerciseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoneExercisesDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/done-exercises": {
+      "post": {
+        "tags": [
+          "DoneExercise"
+        ],
+        "summary": "Create done exercises",
+        "operationId": "CreateDoneExercise",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDoneExerciseCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoneExercisesDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/exercises-info": {
+      "put": {
+        "tags": [
+          "ExercisesInfo"
+        ],
+        "summary": "Update exercise info",
+        "operationId": "UpdateExerciseInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExerciseInfoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ExercisesInfo"
+        ],
+        "summary": "Gets all exercises info",
+        "operationId": "GetAllExercisesInfo",
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExercisesInfoDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ExercisesInfo"
+        ],
+        "summary": "Create exercise info",
+        "operationId": "CreateExerciseInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExerciseInfoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/exercises-info/{identifier}": {
+      "get": {
+        "tags": [
+          "ExercisesInfo"
+        ],
+        "summary": "Gets exercises info",
+        "operationId": "GetExerciseInfo",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ExercisesInfo"
+        ],
+        "summary": "Delete exercise info",
+        "operationId": "DeleteExerciseInfo",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesInfoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/planned-training": {
+      "put": {
+        "tags": [
+          "PlannedTraining"
+        ],
+        "summary": "Update planned training",
+        "operationId": "UpdatePlannedTraining",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlannedTrainingCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedTrainingsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PlannedTraining"
+        ],
+        "summary": "Create planned training",
+        "operationId": "CreatePlannedTraining",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlannedTrainingCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedTrainingsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/planned-training/{identifier}": {
+      "get": {
+        "tags": [
+          "PlannedTraining"
+        ],
+        "summary": "Gets planned training",
+        "operationId": "GetPlannedTraining",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedTrainingsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PlannedTraining"
+        ],
+        "summary": "Delete planned trainings",
+        "operationId": "DeletePlannedTraining",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedTrainingsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/planned-trainings/{userId}": {
+      "get": {
+        "tags": [
+          "PlannedTraining"
+        ],
+        "summary": "Gets all user planned training",
+        "operationId": "GetAllUserPlannedTrainings",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlannedTrainingsDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{identifier}": {
+      "put": {
+        "tags": [
+          "Plans"
+        ],
+        "summary": "Update plans",
+        "operationId": "UpdatePlans",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlansCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlansDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Plans"
+        ],
+        "summary": "Delete plans",
+        "operationId": "DeletePlans",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlansDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/plan/{identifier}": {
+      "get": {
+        "tags": [
+          "Plans"
+        ],
+        "summary": "Gets plans",
+        "operationId": "GetPlan",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlansDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{userId}": {
+      "get": {
+        "tags": [
+          "Plans"
+        ],
+        "summary": "Gets all user plans",
+        "operationId": "GetAllUserPlans",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlansDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/plans": {
+      "post": {
+        "tags": [
+          "Plans"
+        ],
+        "summary": "Create plans",
+        "operationId": "CreatePlans",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlansCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlansDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/statistics/exercises-records/{exerciseId}/user/{userId}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Gets exercises records history",
+        "operationId": "GetExercisesRecordsHistory",
+        "parameters": [
+          {
+            "name": "exerciseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExercisesRecordsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/statistics/exercises/{exerciseId}/user/{userId}/year/{year}/month/{month}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Gets exercises statistics",
+        "operationId": "GetExerciseStatistics",
+        "parameters": [
+          {
+            "name": "exerciseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StatisticsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/statistics/exercises-records/{userId}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Gets exercises all records to user",
+        "operationId": "GetExercisesAllRecords",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExercisesRecordsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/statistics/exercises-records": {
+      "post": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Create exercise records",
+        "operationId": "CreateExercisesRecords",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExercisesRecordsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesRecordsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BodyElements": {
+        "enum": [
+          "Brzuch",
+          "Biceps",
+          "KlatkaPiersiowa",
+          "Plecy",
+          "Nogi",
+          "Triceps",
+          "Pośladki"
+        ],
+        "type": "string"
+      },
+      "CreateDoneExerciseCommand": {
+        "required": [
+          "date",
+          "doneExercise",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "doneExercise": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OneCreatedDoneExerciseCommand"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateExerciseInfoCommand": {
+        "required": [
+          "authorId",
+          "description",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bodyElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BodyElements"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateExercisesRecordsCommand": {
+        "required": [
+          "exerciseId",
+          "reps",
+          "userId",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "exerciseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weight": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlannedTrainingCommand": {
+        "required": [
+          "dateEnd",
+          "dateStart",
+          "plansId",
+          "plansType"
+        ],
+        "type": "object",
+        "properties": {
+          "plansId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "plansType": {
+            "$ref": "#/components/schemas/PlansType"
+          },
+          "dateStart": {
+            "type": "string"
+          },
+          "dateEnd": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "trainerId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlansCommand": {
+        "required": [
+          "authorId",
+          "description",
+          "image",
+          "name",
+          "plannedExercise"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PlansImage"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "plannedExercise": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OneCreatedPlannedExerciseCommand"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "DoneExercisesDto": {
+        "required": [
+          "brakeSeconds",
+          "createdAt",
+          "createdBy",
+          "date",
+          "exerciseInfo",
+          "exerciseInfoId",
+          "identifier",
+          "rate",
+          "reps",
+          "rpe",
+          "series",
+          "userId",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "exerciseInfoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "series": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "weight": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brakeSeconds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exerciseInfo": {
+            "$ref": "#/components/schemas/ExercisesInfoDto"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExercisesInfoDetailsDto": {
+        "required": [
+          "authorId",
+          "createdAt",
+          "createdBy",
+          "description",
+          "identifier",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bodyElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BodyElements"
+            },
+            "nullable": true
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileDetailsDto"
+            },
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExercisesInfoDto": {
+        "required": [
+          "authorId",
+          "createdAt",
+          "createdBy",
+          "description",
+          "identifier",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bodyElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BodyElements"
+            },
+            "nullable": true
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileDto"
+            },
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExercisesRecordsDto": {
+        "required": [
+          "adamsResult",
+          "baechleResult",
+          "bergerResult",
+          "brownResult",
+          "brzyckiResult",
+          "createdAt",
+          "createdBy",
+          "date",
+          "epleyResult",
+          "exerciseId",
+          "identifier",
+          "isAutomat",
+          "lombardiResult",
+          "mayhewResult",
+          "oneRepetitionMaximum",
+          "reps",
+          "revision",
+          "userId",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "revision": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "exerciseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "reps": {
+            "type": "number",
+            "format": "double"
+          },
+          "weight": {
+            "type": "number",
+            "format": "double"
+          },
+          "lombardiResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "brzyckiResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "epleyResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "mayhewResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "adamsResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "baechleResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "bergerResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "brownResult": {
+            "type": "number",
+            "format": "double"
+          },
+          "oneRepetitionMaximum": {
+            "type": "number",
+            "format": "double"
+          },
+          "isAutomat": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileDetailsDto": {
+        "required": [
+          "bytes",
+          "identifier",
+          "name",
+          "size",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "type": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "string",
+            "format": "byte"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileDto": {
+        "required": [
+          "identifier",
+          "photoId"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "photoId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OneCreatedDoneExerciseCommand": {
+        "required": [
+          "brakeSeconds",
+          "exerciseInfoId",
+          "rate",
+          "reps",
+          "rpe",
+          "series",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "exerciseInfoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "series": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "weight": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brakeSeconds": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OneCreatedPlannedExerciseCommand": {
+        "required": [
+          "brakeSeconds",
+          "exerciseInfoId",
+          "rate",
+          "reps",
+          "rpe",
+          "series",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "exerciseInfoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "series": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "weight": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brakeSeconds": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OneUpdatedPlannedExerciseCommand": {
+        "required": [
+          "brakeSeconds",
+          "exerciseInfoId",
+          "rate",
+          "reps",
+          "rpe",
+          "series",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "exerciseInfoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "series": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "weight": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brakeSeconds": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlannedExercisesDto": {
+        "required": [
+          "brakeSeconds",
+          "createdAt",
+          "createdBy",
+          "exerciseInfo",
+          "exerciseInfoId",
+          "identifier",
+          "plansId",
+          "rate",
+          "reps",
+          "rpe",
+          "series",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plansId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "exerciseInfoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "series": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "weight": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brakeSeconds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exerciseInfo": {
+            "$ref": "#/components/schemas/ExercisesInfoDto"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlannedTrainingsDto": {
+        "required": [
+          "createdAt",
+          "createdBy",
+          "dateEnd",
+          "dateStart",
+          "identifier",
+          "plans",
+          "plansId",
+          "plansType"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plansId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "plansType": {
+            "$ref": "#/components/schemas/PlansType"
+          },
+          "dateStart": {
+            "type": "string"
+          },
+          "dateEnd": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "trainerId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "plans": {
+            "$ref": "#/components/schemas/PlansDto"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlansDto": {
+        "required": [
+          "authorId",
+          "createdAt",
+          "createdBy",
+          "description",
+          "identifier",
+          "image",
+          "name",
+          "plannedExercise"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PlansImage"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "plannedExercise": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlannedExercisesDto"
+            }
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "$ref": "#/components/schemas/UserDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlansImage": {
+        "enum": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+          "Push",
+          "Pull",
+          "Legs",
+          "Upper",
+          "Lower"
+        ],
+        "type": "string"
+      },
+      "PlansType": {
+        "enum": [
+          "Individual",
+          "Personal",
+          "Group"
+        ],
+        "type": "string"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "StatisticsDto": {
+        "required": [
+          "date",
+          "exerciseId",
+          "identifier",
+          "userId",
+          "workoutIntensity",
+          "workoutVolume"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "exerciseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "workoutVolume": {
+            "type": "number",
+            "format": "double"
+          },
+          "workoutIntensity": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateDoneExerciseCommand": {
+        "required": [
+          "brakeSeconds",
+          "date",
+          "exerciseInfoId",
+          "rate",
+          "reps",
+          "rpe",
+          "series",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "exerciseInfoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "series": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "weight": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brakeSeconds": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateExerciseInfoCommand": {
+        "required": [
+          "description",
+          "name",
+          "updatedId"
+        ],
+        "type": "object",
+        "properties": {
+          "updatedId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "bodyElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BodyElements"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePlannedTrainingCommand": {
+        "required": [
+          "dateEnd",
+          "dateStart",
+          "identifier",
+          "plansId",
+          "plansType"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plansId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "plansType": {
+            "$ref": "#/components/schemas/PlansType"
+          },
+          "dateStart": {
+            "type": "string"
+          },
+          "dateEnd": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "trainerId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePlansCommand": {
+        "required": [
+          "description",
+          "image",
+          "name",
+          "plannedExercise"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PlansImage"
+          },
+          "plannedExercise": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OneUpdatedPlannedExerciseCommand"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailsDto": {
+        "required": [
+          "fullName"
+        ],
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "BearerJWT": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerJWT": [ ]
+    }
+  ]
+}

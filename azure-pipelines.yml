@@ -1,0 +1,312 @@
+trigger:
+  - "*"
+
+parameters:
+  - name: Image.Publish.Force
+    displayName: Force publish image
+    default: false
+    values:
+      - true
+      - false
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: DOCKER_BUILDKIT
+    value: 1
+    readonly: true
+  - name: Docker.Repository
+    value: trainingHelperRepo
+  - name: Docker.Image.Name
+    value: training-helper/apis/plans
+  - name: Build.Version.Date
+    value: $[format('{0:yyyy}.{0:MM}.{0:dd}', pipeline.startTime)]
+  - name: Build.Version.Date.Slug
+    value: $[format('{0:yyyyMMdd}', pipeline.startTime)]
+  - name: Build.Version.Date.Rev
+    value: $[counter(variables['Build.Version.Date'], 0)]
+  - name: Build.Version.Date.Id
+    value: $[format('{0}.{1}', variables['Build.Version.Date.Slug'], variables['Build.Version.Date.Rev'])]
+    # Release kinds:
+    # - stable -> from 'main'
+    # - hotfix -> from 'release/*'
+    # - dev -> not from 'main' and not form 'release/*'
+  - ${{ if in(variables['Build.SourceBranch'], 'refs/heads/main') }}: # main
+      - name: Build.Kind
+        value: stable
+      - name: Build.Version.Suffix
+        value: ""
+  - ${{ elseif startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') }}: # hotfix
+      - name: Build.Kind
+        value: hotfix
+      - name: Build.Version.Suffix
+        value: ""
+  - ${{ else }}: # dev
+      - name: Build.Kind
+        value: dev
+      - name: Build.Version.Suffix
+        value: $[format('-dev+{0}', variables['Build.Version.Rev'])]
+  - name: Source.SkipMinorVersionBumpTag
+    value: $[or(contains(variables['Build.SourceVersionMessage'], '#SkipMinorVersionBump'), contains(variables['Build.SourceVersionMessage'], '#skip-minor-version-bump'), contains(variables['Build.SourceVersionMessage'], '#SMVB'))]
+  - name: Image.Publish
+    value: $[or(eq(variables['Build.Kind'], 'hotfix'), and(eq(variables['Build.Kind'], 'stable'), ne(variables['Source.SkipMinorVersionBumpTag'], 'true')))]
+  - name: Build.TempName
+    value: $[format('{0} - {1} ({2})', upper(variables['Build.Kind']), variables['Build.Version.Date'], variables['Build.Version.Date.Rev'])]
+
+name: $(Build.TempName)
+
+stages:
+  - stage: init
+    displayName: "Version validation"
+    lockBehavior: sequential
+    jobs:
+      - job: version
+        displayName: Version calculation
+        dependsOn: []
+        steps:
+          - checkout: self
+            persistCredentials: true
+            displayName: Checkout code
+            fetchDepth: 0
+
+          - task: PowerShell@2
+            displayName: Fetch tags
+            inputs:
+              targetType: "inline"
+              script: git fetch --all --prune-tags --tags -v
+
+          - task: PowerShell@2
+            name: version_values
+            displayName: Get version
+            inputs:
+              targetType: "inline"
+              script: |
+                try {
+                  $result = Invoke-Expression 'git describe --match "v[0-9]*" --abbrev=0 --tags HEAD' | Tee-Object -Variable version 
+                } catch {
+                  Write-Host "No version found, falling back..."
+                  $version = "v0.0.0"
+                }
+
+                try {
+                  $version = $version.replace('v','').split('.')
+                  $major = [int]$version[0]
+                  $minor = [int]$version[1]
+                  $patch = [int]$version[2]
+                } catch {
+                  Write-Host "Failed to parse version, falling back..."
+                  $major = [int]"0"
+                  $minor = [int]"0"
+                  $patch = [int]"0"
+                }
+
+                if ('$(Build.Kind)' -eq 'stable') {
+                  Write-Host "Processing stable build!"
+
+                  if ('$(Source.SkipMinorVersionBumpTag)' -eq 'True') {
+                    Write-Host "Skiping minor version bump because of #SMVB tag"
+                    $suffix = [string]::Format("-{0}+{1}", "internal", "$(Build.Version.Date.Id)")
+                  } else {
+                    $minor += 1
+                    $patch = 0
+                    $suffix = ""
+                  }
+                } elseif ('$(Build.Kind)' -eq 'hotfix') {
+                  Write-Host "Processing hotfix build!"
+                  $patch += 1
+                  $suffix = ""
+                } else {
+                    Write-Host "Processing dev build!"
+
+                    try {
+                      $shortHash = Invoke-Expression 'git rev-parse --short HEAD' 
+                      $suffix = [string]::Format("-{0}+{1}", "dev", $shortHash)
+                    } catch {
+                      Write-Host "No short hash for commit found, falling back..."
+                      $suffix = [string]::Format("-{0}+{1}", "dev", "$(Build.Version.Date.Id)")
+                    }
+                }
+
+                $buildName = [string]::Format("{0}.{1}.{2}{3}",$major,$minor,$patch,$suffix)
+                $buildVersion = [string]::Format("{0}", $buildName)
+                $buildFileVersion = [string]::Format("{0}.{1}.{2}.{3}",$major,$minor,$patch,"$(Build.BuildNumber)")
+
+                Write-Host "Setting the name of the build to '$buildName'."
+                Write-Host "##vso[task.setvariable variable=major;isOutput=true;isreadonly=true]$major"
+                Write-Host "##vso[task.setvariable variable=minor;isOutput=true;isreadonly=true]$minor"
+                Write-Host "##vso[task.setvariable variable=patch;isOutput=true;isreadonly=true]$patch"
+                Write-Host "##vso[task.setvariable variable=suffix;isOutput=true;isreadonly=true]$suffix"
+                Write-Host "##vso[task.setvariable variable=full;isOutput=true]$buildName"
+                Write-Host "##vso[task.setvariable variable=file;isOutput=true]$buildFileVersion"
+                Write-Host "##vso[build.updatebuildnumber]$buildName"
+
+  - stage: build
+    dependsOn: init
+    displayName: "Build"
+    variables:
+      Build.Version.Major: $[stageDependencies.init.version.outputs['version_values.major']]
+      Build.Version.Minor: $[stageDependencies.init.version.outputs['version_values.minor']]
+      Build.Version.Patch: $[stageDependencies.init.version.outputs['version_values.patch']]
+      Build.Version.Suffix: $[stageDependencies.init.version.outputs['version_values.suffix']]
+      Build.Version.Full: $[stageDependencies.init.version.outputs['version_values.full']]
+      Build.Version.File: $[stageDependencies.init.version.outputs['version_values.file']]
+    jobs:
+      - job: build
+        displayName: Build
+        steps:
+          - task: UseDotNet@2
+            displayName: Ensure .NET 7.0
+            inputs:
+              packageType: "sdk"
+              version: "7.0.x"
+              includePreviewVersions: true
+
+          - task: DotNetCoreCLI@2
+            displayName: Restore projects
+            inputs:
+              command: "restore"
+              projects: "src/**/*.csproj"
+              feedsToUse: "select"
+              vstsFeed: "TrainerHelper/TrainerFeed"
+
+          - task: DotNetCoreCLI@2
+            displayName: Build projects
+            inputs:
+              command: "build"
+              projects: "src/**/*.csproj"
+              arguments: '--no-restore -p:Version="$(Build.Version.Full)" -p:FileVersion="$(Build.Version.File)"'
+
+  - stage: publish
+    dependsOn:
+      - init
+      - build
+    displayName: "Publish"
+    variables:
+      Build.Version.Major: $[stageDependencies.init.version.outputs['version_values.major']]
+      Build.Version.Minor: $[stageDependencies.init.version.outputs['version_values.minor']]
+      Build.Version.Patch: $[stageDependencies.init.version.outputs['version_values.patch']]
+      Build.Version.Suffix: $[stageDependencies.init.version.outputs['version_values.suffix']]
+      Build.Version.Full: $[stageDependencies.init.version.outputs['version_values.full']]
+      Build.Version.File: $[stageDependencies.init.version.outputs['version_values.file']]
+      Docker.Image.Version: "$[replace(variables['Build.Version.Full'], '+', '-')]"
+    condition: and(succeeded(), or(eq(variables['Image.Publish'], 'true'), eq(${{ parameters['Image.Publish.Force'] }}, 'true')))
+    jobs:
+      - job: publish
+        displayName: Publish
+        steps:
+          - checkout: self
+            persistCredentials: true
+            displayName: Checkout code
+
+          - task: NuGetCommand@2
+            displayName: Generate NuGet credentials
+            inputs:
+              command: "custom"
+              arguments: "sources Update -Name TrainerFeed -UserName any -Password $(System.AccessToken) -ConfigFile nuget.config -StorePasswordInClearText"
+
+          - task: Docker@2
+            displayName: "Build docker image"
+            inputs:
+              containerRegistry: "traininghelper-srvc-conn"
+              repository: "$(Docker.Repository)/$(Docker.Image.Name)"
+              command: "build"
+              Dockerfile: "**/Dockerfile"
+              tags: "$(Docker.Image.Version)"
+              arguments: '--build-arg VERSION="$(Build.Version.Full)" --build-arg FILE_VERSION="$(Build.Version.File)"'
+
+          - task: Docker@2
+            displayName: "Publish docker image"
+            inputs:
+              containerRegistry: "traininghelper-srvc-conn"
+              repository: "$(Docker.Repository)/$(Docker.Image.Name)"
+              command: "push"
+              tags: $(Docker.Image.Version)
+
+          - task: PowerShell@2
+            displayName: Update tag
+            condition: and(succeeded(), in(variables['Build.Kind'], 'stable', 'hotfix'))
+            inputs:
+              targetType: "inline"
+              script: |
+                git tag v$(Build.Version.Full) HEAD
+                git push origin v$(Build.Version.Full)
+
+          - task: Bash@3
+            displayName: Get deployment tags
+            inputs:
+              targetType: "inline"
+              failOnStderr: true
+              script: |
+                echo 'Setting variables...'
+                echo "##vso[task.setvariable variable=Docker.Image.FullName]$(docker images '*\/$(Docker.Repository)/$(Docker.Image.Name):$(Docker.Image.Version)' | grep '$(Docker.Repository)/$(Docker.Image.Name)' | awk '{ print $1 }')"
+
+          - task: Bash@3
+            displayName: Prepare build artifact
+            inputs:
+              targetType: "inline"
+              workingDirectory: "$(Build.ArtifactStagingDirectory)"
+              failOnStderr: true
+              script: |
+                echo 'Creating buffer...'
+                rm -f output.tmp
+                touch output.tmp
+                echo "Docker.Image.FullName -> '$(Docker.Image.FullName)'"
+
+                cat << EOF >> output.tmp
+                {
+                  "_version": 6,
+                  "build": {
+                    "Id": "$(Build.BuildId)",
+                    "Number": "$(Build.BuildNumber)",
+                    "DefinitionName": "$(Build.DefinitionName)",
+                    "QueuedBy": "$(Build.QueuedBy)",
+                    "Reason": "$(Build.Reason)",
+                    "SourceBranch": "$(Build.SourceBranch)",
+                    "SourceVersion": "$(Build.SourceVersion)",
+                    "Repository": {
+                      "Name" : "$(Build.Repository.Name)",
+                      "Provider" : "$(Build.Repository.Provider)"
+                    },
+                    "version": {
+                      "full": "$(Build.Version.Full)",
+                      "semantic": "$(Docker.Image.Version)",
+                      "simple": "$(Build.Version.Major).$(Build.Version.Minor).$(Build.Version.Patch)",
+                      "major": $(Build.Version.Major),
+                      "minor": $(Build.Version.Minor),
+                      "patch": $(Build.Version.Patch),
+                      "build": $(Build.BuildId),
+                      "suffix": "$(Build.Version.Suffix)",
+                      "kind": "$(Build.Kind)",
+                      "revision": $(Build.Version.Date.Id)
+                    }
+                  },
+                  "image": {
+                    "name": "$(Docker.Image.Name)",
+                    "repository": "$(Docker.Image.FullName)",
+                    "tags": [
+                      "$(Docker.Image.FullName):$(Docker.Image.Version)"
+                    ],
+                    "deployTag": "$(Docker.Image.FullName):$(Docker.Image.Version)"
+                  }
+                }
+                EOF
+
+                echo 'Compiling artifact file...'
+                cat output.tmp
+                cat output.tmp | jq --slurp 'reduce .[] as $item ({}; . * $item)' > build-result.json
+
+                echo 'Compiled artifact file'
+                cat build-result.json
+
+                echo 'Cleaning up...'
+                rm -f output.tmp
+
+                echo 'Done!'
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish build artifact
+            inputs:
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+              ArtifactName: "build-artifacts"
+              publishLocation: "Container"
